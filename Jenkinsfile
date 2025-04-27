@@ -16,11 +16,14 @@ pipeline {
         stage('Docker Push') {
             steps {
                 withCredentials([string(credentialsId: 'dockerhub', variable: 'DOCKER_PASSWORD')]) {
-                    // Using a more secure approach with a shell script for docker login
-                    sh """
+                    // Print the password for debugging purposes (use cautiously!)
+                    echo "Docker Password: $DOCKER_PASSWORD"
+
+                    // Using the secret text credentials for login
+                    sh '''
                         echo $DOCKER_PASSWORD | docker login -u dumalaramesh --password-stdin
                         docker push dumalaramesh/hiring-app:$BUILD_NUMBER
-                    """
+                    '''
                 }
             }
         }
