@@ -15,7 +15,7 @@ pipeline {
 
         stage('Docker Push') {
             steps {
-                withCredentials([string(credentialsId: 'dockerhub1', variable: 'auth')]) {
+                withCredentials([string(credentialsId: 'dockerhub', variable: 'auth')]) {
                     sh """
                     echo "${auth}" | docker login -u dumalaramesh --password-stdin
                     docker push dumalaramesh/hiring-app:${BUILD_NUMBER}
