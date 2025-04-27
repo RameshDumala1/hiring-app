@@ -9,7 +9,7 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh "docker build . -t dumalaramesh/hiring-app:$BUILD_NUMBER"
+                sh "docker build . -t dumalaramesh/hiring-app:${BUILD_NUMBER}"
             }
         }
 
@@ -18,7 +18,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'dockerhub1', variable: 'auth')]) {
                     sh """
                     echo "${auth}" | docker login -u dumalaramesh --password-stdin
-                    docker push dumalaramesh/hiring-app:$BUILD_NUMBER
+                    docker push dumalaramesh/hiring-app:${BUILD_NUMBER}
                     """
                 }
             }
@@ -34,15 +34,24 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'Github_server', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                        sh '''
+                        sh """
+                        echo "Deployment.yaml before updating:"
                         cat /var/lib/jenkins/workspace/$JOB_NAME/dev/deployment.yaml
+                        
+                        echo "Updating Deployment.yaml with build number ${BUILD_NUMBER}..."
                         sed -i "s/5/${BUILD_NUMBER}/g" /var/lib/jenkins/workspace/$JOB_NAME/dev/deployment.yaml
+                        
+                        echo "Deployment.yaml after updating:"
                         cat /var/lib/jenkins/workspace/$JOB_NAME/dev/deployment.yaml
-                        git add .
-                        git commit -m 'Updated the deploy yaml | Jenkins Pipeline'
+                        
+                        git config --global user.email "jenkins@example.com"
+                        git config --global user.name "Jenkins Pipeline"
+                        
+                        git add dev/deployment.yaml
+                        git commit -m "Updated the deployment yaml to Build #${BUILD_NUMBER} | Jenkins Pipeline"
                         git remote -v
                         git push https://$GIT_USERNAME:$GIT_PASSWORD@github.com/RameshDumala1/Hiring-app-argocd.git main
-                        '''
+                        """
                     }
                 }
             }
