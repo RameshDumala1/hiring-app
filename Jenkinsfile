@@ -15,8 +15,13 @@ pipeline {
 
         stage('Docker Push') {
             steps {
-                // Docker will automatically use the stored credentials from ~/.docker/config.json
-                sh "docker push dumalaramesh/hiring-app:$BUILD_NUMBER"
+                withCredentials([string(credentialsId: 'dockerhub', variable: 'DOCKER_PASSWORD')]) {
+                    // Using a more secure approach with a shell script for docker login
+                    sh """
+                        echo $DOCKER_PASSWORD | docker login -u dumalaramesh --password-stdin
+                        docker push dumalaramesh/hiring-app:$BUILD_NUMBER
+                    """
+                }
             }
         }
 
@@ -24,7 +29,7 @@ pipeline {
             steps {
                 git branch: 'main', url: 'https://github.com/RameshDumala1/Hiring-app-argocd.git'
             }
-        } 
+        }
 
         stage('Update K8S manifest & push to Repo'){
             steps {
