@@ -45,7 +45,7 @@ pipeline {
                             echo 'Deployment.yaml before updating:'
                             cat dev/deployment.yaml
                             echo 'Updating Deployment.yaml with build number 8...'
-                            sed -i 's|dumalaramesh/hiring-app:[0-35]\+|dumalaramesh/hiring-app:8|g' dev/deployment.yaml
+                            sed -i 's|dumalaramesh/hiring-app:[0-35]\\+|dumalaramesh/hiring-app:8|g' dev/deployment.yaml
                             echo 'Deployment.yaml after updating:'
                             cat dev/deployment.yaml
 
