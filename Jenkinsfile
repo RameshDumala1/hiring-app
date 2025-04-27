@@ -39,7 +39,7 @@ pipeline {
                         cat /var/lib/jenkins/workspace/$JOB_NAME/dev/deployment.yaml
                         
                         echo "Updating Deployment.yaml with build number ${BUILD_NUMBER}..."
-                        sed -i "s/5/${BUILD_NUMBER}/g" /var/lib/jenkins/workspace/$JOB_NAME/dev/deployment.yaml
+                        sed -i "s|dumalaramesh/hiring-app:[0-35]\\+|dumalaramesh/hiring-app:${BUILD_NUMBER}|g" dev/deployment.yaml
                         
                         echo "Deployment.yaml after updating:"
                         cat /var/lib/jenkins/workspace/$JOB_NAME/dev/deployment.yaml
