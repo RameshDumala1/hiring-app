@@ -14,7 +14,7 @@ pipeline {
 
         stage('Docker Push') {
             steps {
-                withCredentials([string(credentialsId: 'dockerhub', variable: 'DOCKER_PASSWORD')]) {
+                withCredentials([string(credentialsId: 'dockerhub1', variable: 'DOCKER_PASSWORD')]) {
                     // Secure Docker login with Secret Text credentials
                     sh "echo ${DOCKER_PASSWORD} | docker login -u dumalaramesh --password-stdin"
                     sh "docker push dumalaramesh/hiring-app:${env.IMAGE_TAG}"  // Using env.IMAGE_TAG
