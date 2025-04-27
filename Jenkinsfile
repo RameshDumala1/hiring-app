@@ -6,7 +6,7 @@ pipeline {
     }
 
     stages {
-
+        
         stage('Docker Build') {
             steps {
                 sh "docker build . -t dumalaramesh/hiring-app:${BUILD_NUMBER}"
@@ -36,15 +36,15 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'Github_server', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                         sh """
                         echo "Deployment.yaml before updating:"
-                        cat /var/lib/jenkins/workspace/$JOB_NAME/dev/deployment.yaml
+                        cat /var/lib/jenkins/workspace/$JOB_NAME/dev/deployment.yaml  # Adjust path if needed
                         
                         echo "Updating Deployment.yaml with build number ${BUILD_NUMBER}..."
-                        sed -i "s|dumalaramesh/hiring-app:[0-35]\\+|dumalaramesh/hiring-app:${BUILD_NUMBER}|g" dev/deployment.yaml
+                        sed -i "s|dumalaramesh/hiring-app:[0-35]\\+|dumalaramesh/hiring-app:${BUILD_NUMBER}|g" dev/deployment.yaml  # Ensure path is correct
                         
                         echo "Deployment.yaml after updating:"
-                        cat /var/lib/jenkins/workspace/$JOB_NAME/dev/deployment.yaml
+                        cat /var/lib/jenkins/workspace/$JOB_NAME/dev/deployment.yaml  # Adjust path if needed
                         
-                        git config --global user.email "dumalaramesh99@gmail.com"
+                        git config --global user.email "your-email@example.com"
                         git config --global user.name "RameshDumala1"
                         
                         git add dev/deployment.yaml
