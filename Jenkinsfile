@@ -38,7 +38,7 @@ pipeline {
 
         stage('Update K8S manifest & push to Repo') {
             steps {
-                withCredentials([string(credentialsId: 'github-pat', variable: 'GIT_TOKEN')]) {
+                withCredentials([string(credentialsId: 'git', variable: 'GIT_TOKEN')]) {
                     script {
                         echo 'Updating deployment.yaml file...'
                         sh """
