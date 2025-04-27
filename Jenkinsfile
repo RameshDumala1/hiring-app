@@ -21,7 +21,7 @@ pipeline {
 
         stage('Checkout K8S manifest SCM') {
             steps {
-                withCredentials([string(credentialsId: 'github-pat', variable: 'GIT_TOKEN')]) {
+                withCredentials([string(credentialsId: 'git', variable: 'GIT_TOKEN')]) {
                     script {
                         echo 'Checking out K8S manifest repository...'
                         sh """
