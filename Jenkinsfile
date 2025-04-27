@@ -44,8 +44,8 @@ pipeline {
                         echo "Deployment.yaml after updating:"
                         cat /var/lib/jenkins/workspace/$JOB_NAME/dev/deployment.yaml
                         
-                        git config --global user.email "jenkins@example.com"
-                        git config --global user.name "Jenkins Pipeline"
+                        git config --global user.email "dumalaramesh99@gmail.com"
+                        git config --global user.name "RameshDumala1"
                         
                         git add dev/deployment.yaml
                         git commit -m "Updated the deployment yaml to Build #${BUILD_NUMBER} | Jenkins Pipeline"
