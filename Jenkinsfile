@@ -38,19 +38,15 @@ pipeline {
 
         stage('Update K8S manifest & push to Repo') {
             steps {
-                withCredentials([string(credentialsId: 'git', variable: 'GIT_TOKEN')]) {
-                    script {
-                        echo 'Updating deployment.yaml file...'
+                script {
+                   withCredentials([string(credentialsId: 'git', variable: 'GIT_TOKEN')]) {
                         sh """
-                            echo 'Deployment.yaml before updating:'
-                            cat dev/deployment.yaml
-                            echo 'Updating Deployment.yaml with build number 8...'
-                            sed -i 's|dumalaramesh/hiring-app:[0-9]\+|dumalaramesh/hiring-app:8|g' dev/deployment.yaml
-                            echo 'Deployment.yaml after updating:'
-                            cat dev/deployment.yaml
-
-                            git add dev/deployment.yaml
-                            git commit -m 'Updated the deployment yaml to Build #8 | Jenkins Pipeline'
+                        cat /var/lib/jenkins/workspace/$JOB_NAME/dev/deployment.yaml
+                        sed -i "s/5/${BUILD_NUMBER}/g" /var/lib/jenkins/workspace/$JOB_NAME/dev/deployment.yaml
+                        cat /var/lib/jenkins/workspace/$JOB_NAME/dev/deployment.yaml
+                        git add .
+                        git commit -m 'Updated the deploy yaml | Jenkins Pipeline'
+                        git remote -v
                             git push https://${GIT_USER}:${GIT_TOKEN}@github.com/${GIT_USER}/Hiring-app-argocd.git ${GIT_BRANCH}
                         """
                     }
